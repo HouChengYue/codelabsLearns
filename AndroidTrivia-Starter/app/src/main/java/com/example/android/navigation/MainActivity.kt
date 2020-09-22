@@ -24,6 +24,10 @@ import androidx.navigation.findNavController
 import androidx.navigation.ui.NavigationUI
 import com.example.android.navigation.databinding.ActivityMainBinding
 
+/**
+ * https://codelabs.developers.google.com/codelabs/kotlin-android-training-start-external-activity/index.html#6
+ * navigation 学习项目 需翻墙
+ */
 class MainActivity : AppCompatActivity() {
     /**
      * 抽屉布局
