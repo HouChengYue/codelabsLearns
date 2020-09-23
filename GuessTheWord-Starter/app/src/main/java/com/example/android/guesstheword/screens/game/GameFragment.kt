@@ -22,6 +22,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import com.example.android.guesstheword.R
 import com.example.android.guesstheword.databinding.GameFragmentBinding
 
@@ -41,9 +43,11 @@ class GameFragment : Fragment() {
 
     private lateinit var binding: GameFragmentBinding
 
+    private lateinit var vieeMoudel: GameViewMoudel
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-
+        vieeMoudel=ViewModelProvider(this).get(GameViewMoudel::class.java)
         // Inflate view and obtain an instance of the binding class
         binding = DataBindingUtil.inflate(
                 inflater,
@@ -57,10 +61,25 @@ class GameFragment : Fragment() {
 
         binding.correctButton.setOnClickListener { onCorrect() }
         binding.skipButton.setOnClickListener { onSkip() }
+        binding.endGameButton.setOnClickListener { onEndGame() }
         updateScoreText()
         updateWordText()
         return binding.root
 
+    }
+
+    /**
+     * 游戏结束
+     */
+    private fun onEndGame(){
+        gameFinished()
+    }
+
+    /**
+     * 游戏结束
+     */
+    private fun gameFinished() {
+        findNavController().navigate(GameFragmentDirections.actionGameToScore(vieeMoudel.score))
     }
 
     /**
@@ -96,13 +115,19 @@ class GameFragment : Fragment() {
     /** Methods for buttons presses **/
 
     private fun onSkip() {
-        score--
-        nextWord()
+//        score--
+//        nextWord()
+        vieeMoudel.onSkip()
+        updateWordText()
+        updateScoreText()
     }
 
     private fun onCorrect() {
-        score++
-        nextWord()
+//        score++
+//        nextWord()
+        vieeMoudel.onCorrect()
+        updateWordText()
+        updateScoreText()
     }
 
     /**
@@ -121,10 +146,12 @@ class GameFragment : Fragment() {
     /** Methods for updating the UI **/
 
     private fun updateWordText() {
-        binding.wordText.text = word
+//        binding.wordText.text = word
+        binding.wordText.text = vieeMoudel.word
     }
 
     private fun updateScoreText() {
-        binding.scoreText.text = score.toString()
+//        binding.scoreText.text = score.toString()
+        binding.scoreText.text = vieeMoudel.score.toString()
     }
 }
