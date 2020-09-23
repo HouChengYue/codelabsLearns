@@ -18,6 +18,7 @@ package com.example.android.dessertclicker
 
 import android.content.ActivityNotFoundException
 import android.os.Bundle
+import android.os.PersistableBundle
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
@@ -74,13 +75,55 @@ class MainActivity : AppCompatActivity() {
         binding.dessertButton.setOnClickListener {
             onDessertClicked()
         }
-
+        Timber.i("savedInstanceState::${savedInstanceState==null}")
+        savedInstanceState?.apply {
+            Timber.i("MainActivity ---onCreate.run()")
+            revenue = savedInstanceState.getInt(Companion.KEY_REVENUE, 0)
+            dessertsSold = savedInstanceState.getInt(Companion.KEY_DESSERT_SOLD, 0)
+            dessertTimer.secondsCount =
+                    savedInstanceState.getInt(Companion.KEY_TIMER_SECONDS, 0)
+        }
+        showCurrentDessert()
         // Set the TextViews to the right values
         binding.revenue = revenue
         binding.amountSold = dessertsSold
 
         // Make sure the correct dessert is showing
         binding.dessertButton.setImageResource(currentDessert.imageId)
+
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        outState.apply {
+            putInt(KEY_REVENUE, revenue)
+            putInt(KEY_DESSERT_SOLD, dessertsSold)
+            putInt(KEY_TIMER_SECONDS, dessertTimer.secondsCount)
+            Timber.i("MainActivity------onSaveInstanceState Called\n" +
+                    "KEY_REVENUE:${revenue}\n" +
+                    "KEY_DESSERT_SOLD:${dessertsSold}\n" +
+                    "KEY_TIMER_SECONDS:${dessertTimer.secondsCount}\n")
+        }
+        super.onSaveInstanceState(outState)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        Timber.i("MainActivity ---onResume()")
+    }
+
+    override fun onPause() {
+        super.onPause()
+        Timber.i("MainActivity ---onPause()")
+    }
+
+    override fun onStop() {
+        super.onStop()
+        Timber.i("MainActivity ---onStop()")
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        Timber.i("MainActivity ---onDestroy()")
     }
 
     /**
@@ -148,5 +191,11 @@ class MainActivity : AppCompatActivity() {
             R.id.shareMenuButton -> onShare()
         }
         return super.onOptionsItemSelected(item)
+    }
+
+    companion object {
+        const val KEY_REVENUE = "revenue_key"
+        const val KEY_DESSERT_SOLD = "dessert_sold_key"
+        const val KEY_TIMER_SECONDS = "timer_seconds_key"
     }
 }
