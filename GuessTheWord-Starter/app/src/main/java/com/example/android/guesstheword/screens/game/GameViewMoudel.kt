@@ -1,5 +1,6 @@
 package com.example.android.guesstheword.screens.game
 
+import android.text.TextUtils
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -36,8 +37,8 @@ class GameViewMoudel : ViewModel() {
         get() = _eventGameFinish
 
 
-    fun  onGameFinishComplete(){
-        _eventGameFinish.value=false
+    fun onGameFinishComplete() {
+        _eventGameFinish.value = false
     }
 
 
@@ -46,7 +47,7 @@ class GameViewMoudel : ViewModel() {
     private fun nextWord() {
         if (wordList.isNotEmpty()) {
             _word.value = wordList.removeAt(0)
-        }else{
+        } else {
             onGameFinish()
         }
 
@@ -65,8 +66,14 @@ class GameViewMoudel : ViewModel() {
         nextWord()
     }
 
-    fun onGameFinish(){
-        _eventGameFinish.value=true
+    fun onGameFinish() {
+        _eventGameFinish.value = true
+    }
+
+    fun initDataSetting() {
+        if (TextUtils.isEmpty(_word.value)) {
+            nextWord()
+        }
     }
 
     /**
