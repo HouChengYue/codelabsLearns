@@ -87,7 +87,7 @@ class GameFragment : Fragment() {
     private fun gameFinished() {
         findNavController().navigate(GameFragmentDirections.actionGameToScore(
                 vieeMoudel.score.value ?: 0))
-        Toast.makeText(activity, "游戏刚刚结束", Toast.LENGTH_SHORT).show()
+        Toast.makeText(activity, "游戏结束", Toast.LENGTH_SHORT).show()
         vieeMoudel.onGameFinishComplete()
     }
 

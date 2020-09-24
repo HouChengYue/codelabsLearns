@@ -5,6 +5,7 @@ import android.security.identity.DocTypeNotSupportedException
 import android.text.TextUtils
 import android.text.format.DateUtils
 import android.util.Log
+import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
@@ -52,6 +53,7 @@ class GameViewMoudel : ObservableViewModel() {
     private fun nextWord() {
         if (wordList.isNotEmpty()) {
             _word.value = wordList.removeAt(0)
+            timer.start()
         } else {
             onGameFinish()
         }
@@ -128,9 +130,10 @@ class GameViewMoudel : ObservableViewModel() {
     /**
      * 用来显示的倒计时String
      */
-    val currentTimeString = Transformations.map(currentTime) { time ->
-        DateUtils.formatElapsedTime(time)
+    val currentTimeString = Transformations.map(currentTime) {
+        DateUtils.formatElapsedTime(it)
     }
+
 
     init {
         Log.i("GameViewMoudel", "GameViewMoudel created!! ")
@@ -140,7 +143,7 @@ class GameViewMoudel : ObservableViewModel() {
         timer = object : CountDownTimer(COUNTDOWN_TIME, ONE_SECOND) {
             override fun onTick(millisUntilFinished: Long) {
                 _currentTime.value = millisUntilFinished / ONE_SECOND
-
+                notifyChange()
             }
 
             override fun onFinish() {
@@ -148,7 +151,6 @@ class GameViewMoudel : ObservableViewModel() {
             }
 
         }
-        timer.start()
     }
 
 

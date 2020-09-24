@@ -79,10 +79,10 @@
             android:textSize="14sp"
             android:textStyle="normal"
             android:visibility="visible"
-            android:text="@{gameViewModel.currentTimeString}"
             app:layout_constraintBottom_toTopOf="@+id/score_text"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
+            android:text="@{gameViewModel.currentTime.toString()}"
             tools:text="0:00" />
 
         <TextView
