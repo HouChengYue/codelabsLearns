@@ -11,7 +11,7 @@ import androidx.lifecycle.ViewModel
  * @author 侯程月
  * @date 2020/9/23
  */
-class GameViewMoudel : ViewModel() {
+class GameViewMoudel : ObservableViewModel() {
 
 
     override fun onCleared() {
@@ -58,12 +58,14 @@ class GameViewMoudel : ViewModel() {
 //        score--
         _score.value = score.value?.minus(1)
         nextWord()
+        notifyChange()
     }
 
     fun onCorrect() {
 //        score++
         _score.value = score.value?.plus(1)
         nextWord()
+        notifyChange()
     }
 
     fun onGameFinish() {
