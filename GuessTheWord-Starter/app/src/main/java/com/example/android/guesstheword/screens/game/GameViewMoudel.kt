@@ -1,9 +1,13 @@
 package com.example.android.guesstheword.screens.game
 
+import android.os.CountDownTimer
+import android.security.identity.DocTypeNotSupportedException
 import android.text.TextUtils
+import android.text.format.DateUtils
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 
 /**
@@ -17,6 +21,7 @@ class GameViewMoudel : ObservableViewModel() {
     override fun onCleared() {
         super.onCleared()
         Log.i("GameViewMoudel", "GameViewMoudel destroyed! ")
+        timer.cancel()
     }
 
     //    当前单词
@@ -111,11 +116,57 @@ class GameViewMoudel : ObservableViewModel() {
         wordList.shuffle()
     }
 
+    /**
+     * 当前时间
+     */
+    private val _currentTime = MutableLiveData(0L)
+    val currentTime: LiveData<Long>
+        get() = _currentTime
+
+    private val timer: CountDownTimer
+
+    /**
+     * 用来显示的倒计时String
+     */
+    val currentTimeString = Transformations.map(currentTime) { time ->
+        DateUtils.formatElapsedTime(time)
+    }
+
     init {
         Log.i("GameViewMoudel", "GameViewMoudel created!! ")
         resetList()
         _score.value = 0
         _word.value = ""
+        timer = object : CountDownTimer(COUNTDOWN_TIME, ONE_SECOND) {
+            override fun onTick(millisUntilFinished: Long) {
+                _currentTime.value = millisUntilFinished / ONE_SECOND
 
+            }
+
+            override fun onFinish() {
+                _currentTime.value = DONE
+            }
+
+        }
+        timer.start()
     }
+
+
+    companion object {
+        /**
+         * 游戏结束
+         */
+        private const val DONE = 0L
+
+        /**
+         * 时间周期
+         */
+        private const val ONE_SECOND = 1000L
+
+        /**
+         * 总共的时间
+         */
+        private const val COUNTDOWN_TIME = 60000L
+    }
+
 }
