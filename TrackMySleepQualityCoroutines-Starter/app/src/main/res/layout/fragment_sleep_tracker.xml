@@ -24,6 +24,10 @@
          click handlers, and state variables. -->
     <data>
 
+        <variable
+            name="sleepTrackerViewMoudel"
+            type="com.example.android.trackmysleepquality.sleeptracker.SleepTrackerViewModel" />
+
     </data>
 
     <!-- Start of the visible fragment layout using ConstraintLayout -->
@@ -56,7 +60,8 @@
                 android:layout_marginStart="@dimen/margin"
                 android:layout_marginTop="@dimen/margin"
                 android:layout_marginEnd="@dimen/margin"
-                android:text="@string/how_was_hour_sleep" />
+                android:text="@{sleepTrackerViewMoudel.nightString}" />
+            <!--            android:text="@string/how_was_hour_sleep"-->
         </ScrollView>
 
         <!-- With data binding and LiveData, we can track the buttons' visibility states
@@ -69,6 +74,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/margin"
+            android:onClick="@{()->sleepTrackerViewMoudel.onStartTracking()}"
             android:text="@string/start"
             app:layout_constraintBaseline_toBaselineOf="@id/stop_button"
             app:layout_constraintEnd_toStartOf="@+id/stop_button"
@@ -83,6 +89,7 @@
             android:layout_marginTop="@dimen/margin"
             android:layout_marginEnd="@dimen/margin"
             android:text="@string/stop"
+            android:onClick="@{()->sleepTrackerViewMoudel.onStoptracking()}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/start_button"
             app:layout_constraintTop_toTopOf="parent" />
@@ -96,6 +103,7 @@
             android:layout_marginEnd="@dimen/margin"
             android:layout_marginBottom="@dimen/margin"
             android:text="@string/clear"
+            android:onClick="@{()->sleepTrackerViewMoudel.onClear()}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
