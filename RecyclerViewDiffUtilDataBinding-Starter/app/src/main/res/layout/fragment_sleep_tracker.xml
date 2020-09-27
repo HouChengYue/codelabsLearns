@@ -61,6 +61,7 @@
             android:enabled="@{sleepTrackerViewModel.startButtonVisible}"
             android:onClick="@{() -> sleepTrackerViewModel.onStart()}"
             android:text="@string/start"
+            android:textColor="@color/btn_text_color"
             app:layout_constraintBaseline_toBaselineOf="@id/stop_button"
             app:layout_constraintEnd_toStartOf="@+id/stop_button"
             app:layout_constraintHorizontal_chainStyle="spread"
@@ -76,6 +77,7 @@
             android:enabled="@{sleepTrackerViewModel.stopButtonVisible}"
             android:onClick="@{() -> sleepTrackerViewModel.onStop()}"
             android:text="@string/stop"
+            android:textColor="@color/btn_text_color"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/start_button"
             app:layout_constraintTop_toTopOf="parent" />
@@ -91,6 +93,7 @@
             android:enabled="@{sleepTrackerViewModel.clearButtonVisible}"
             android:onClick="@{() -> sleepTrackerViewModel.onClear()}"
             android:text="@string/clear"
+            android:textColor="@color/btn_text_color"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />

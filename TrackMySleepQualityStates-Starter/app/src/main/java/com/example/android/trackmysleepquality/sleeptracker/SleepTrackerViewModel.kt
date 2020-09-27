@@ -17,10 +17,7 @@
 package com.example.android.trackmysleepquality.sleeptracker
 
 import android.app.Application
-import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Transformations
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import com.example.android.trackmysleepquality.database.SleepDatabaseDao
 import com.example.android.trackmysleepquality.database.SleepNight
 import com.example.android.trackmysleepquality.formatNights
@@ -36,6 +33,15 @@ import kotlinx.coroutines.withContext
 class SleepTrackerViewModel(
         val database: SleepDatabaseDao,
         application: Application) : AndroidViewModel(application) {
+
+    private val _navigatieToSleepQulity = MutableLiveData<SleepNight>()
+
+    val navigateToSleepQulity: LiveData<SleepNight>
+        get() = _navigatieToSleepQulity
+
+    fun doneNavigating() {
+        _navigatieToSleepQulity.value = null
+    }
 
     private val nights = database.getAllNights()
 
@@ -82,6 +88,7 @@ class SleepTrackerViewModel(
             val oldNight = tonight.value ?: return@launch
             oldNight.endTimeMilli = System.currentTimeMillis()
             update(oldNight)
+            _navigatieToSleepQulity.value = oldNight
         }
     }
 
@@ -99,5 +106,37 @@ class SleepTrackerViewModel(
     suspend fun clear() {
         database.clear()
     }
+
+    /**
+     * 开始键的转态
+     */
+    val startButtonVisible: LiveData<Boolean> = Transformations.map(tonight) {
+        it == null
+    }
+
+
+    /**
+     * 结束状态
+     */
+    val stopButtonVisible: LiveData<Boolean> = Transformations.map(tonight) {
+        it != null
+    }
+
+    /**
+     * 情况状态
+     */
+    val clearButtonVisible: LiveData<Boolean> = Transformations.map(nights) {
+        it?.isEmpty()
+    }
+
+
+    private var _showSnackbarEvent = MutableLiveData<Boolean>(false)
+    val showSnackbarEvent: LiveData<Boolean>
+        get() = _showSnackbarEvent
+
+    fun doneshowingSnackbar(){
+        _showSnackbarEvent.value=false
+    }
+
 }
 
